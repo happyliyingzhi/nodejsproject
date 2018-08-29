@@ -14,9 +14,11 @@ const path=require('path');
   //注册页面
   router.get('/register',accountCTRL.accountlogin.registerPege);
  //验证注册页面
-  router.post('/register',accountCTRL.accountlogin.registeryanzheng)
-
-
+  router.post('/register',accountCTRL.accountlogin.registeryanzheng);
+//图片验证
+router.get('/vcode',accountCTRL.accountlogin.vcodeimage);
+ //最终处理数据
+    router.post('/login',accountCTRL.accountlogin.login)
 
 //导出router
      module.exports=router;

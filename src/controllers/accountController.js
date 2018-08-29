@@ -70,12 +70,69 @@ const  registerPege=(req,res)=>{
 
 
  //图片的验证
+     const vcodeimage=(req,res)=>{
+        const vcode = parseInt(Math.random() * 9000 + 1000);
+        
+       // 把刚刚随机生成的验证码，存储到session中
+        req.session.vcode = vcode;
+        var p = new captchapng(80,30,vcode); // width,height,numeric captcha
+        p.color(0, 0, 0, 0);  // First color: background (red, green, blue, alpha)
+        p.color(80, 80, 80, 255); // Second color: paint (red, green, blue, alpha)
  
+        var img = p.getBase64();
+        var imgbase64 = new Buffer(img,'base64');
+        res.writeHead(200, {
+            'Content-Type': 'image/png'
+        });
+        res.end(imgbase64);
+
+
+     }
+   //登入页面的验证
+   const login=(req,res)=>{
+    const result = { status: 0, message: "登录成功" };
+    if(req.body.vcode!= req.session.vcode){
+           result.status=1;
+           result.message="验证码不对";
+           res.json(result);
+           return;
+    }
+
+     // 去数据库中，使用username & password 去校验
+  MongoClient.connect(
+    url,
+    { useNewUrlParser: true },
+    function(err, client) {
+      // 获取db对象
+      const db = client.db(dbName);
+
+      // 拿着要操作的集合
+      const collection = db.collection("accountinfo");
+
+      collection.findOne(
+        { username: req.body.username, password: req.body.password },
+        (err, doc) => {
+          // 关闭掉数据库连接
+          client.close();
+          if (doc == null) {
+            result.status = 2;
+            result.message = "用户名或密码错误";
+          }
+
+          res.json(result);
+        }
+      );
+    }
+  );
+
+   }
 
 //导出去
      exports.accountlogin={
         getLoginPage,
        registerPege,
-       registeryanzheng
+       registeryanzheng,
+       vcodeimage,
+       login
 }
 
