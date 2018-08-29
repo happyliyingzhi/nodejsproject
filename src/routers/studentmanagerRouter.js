@@ -5,7 +5,8 @@ const path=require('path');
 
 //导入自定义的安装包
 const studentManagerCTR=require(path.join(__dirname,"../controllers/studentmanagerControll.js"))
-  console.log(studentManagerCTR)
+  //console.log(studentManagerCTR)
+ // console.log('111')
 //继承路由
 studentManagerRouter.get('/list',studentManagerCTR.studentManager);
 //导出去

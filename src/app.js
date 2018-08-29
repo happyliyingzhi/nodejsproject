@@ -4,7 +4,8 @@ const express=require('express');
  const path=require('path');
  const app=express();
  const bodyParser = require('body-parser');
- var session = require('express-session');
+ const session = require('express-session');
+
   //发送post设置的头
  app.use(bodyParser.urlencoded({ extended: false })) ;
  // Use the session middleware
@@ -16,7 +17,8 @@ app.use(session({
 //集成路由
      const accountRouter=require(path.join(__dirname,'routers/accountRouter.js'));
      app.use('/account',accountRouter)
-     const studentmanager=require(path.join(__dirname,'/routers/accountRouter.js'));
+     const studentmanager=require(path.join(__dirname,'/routers/studentmanagerRouter.js'));
+           //  console.log(studentmanager)
      app.use('/studentmanager',studentmanager);
  
 
