@@ -118,6 +118,7 @@ const  registerPege=(req,res)=>{
      }
    //登入页面的验证
    const login=(req,res)=>{
+    
     const result = { status: 0, message: "登录成功" };
     if(req.body.vcode!= req.session.vcode){
            result.status=1;
@@ -128,10 +129,14 @@ const  registerPege=(req,res)=>{
 
      // 去数据库中，使用username & password 去校验
      findones.findone('accountinfo', { username: req.body.username, password: req.body.password },(err,doc)=>{
+        console.log(doc)
          if(doc==null){
              result.status=2;
              result.message="用户名或者密码错误";
              res.json(result);
+         }else{
+            req.session.loginName= req.body.username;
+             
          }
          res.json(result);
 
